@@ -1,2 +1,2 @@
-# nitro_1
+# nitro version 1
 Running registration application
