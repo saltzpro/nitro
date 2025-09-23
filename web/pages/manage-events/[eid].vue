@@ -124,7 +124,7 @@
                             <b-table-simple responsive>
                                 <b-thead>
                                     <b-tr>
-                                        <b-th class="text-center">Categorys</b-th>
+                                        <b-th class="text-center">Category</b-th>
                                         <b-th class="text-center">Remarks</b-th>
                                         <b-th class="text-center">Original Price</b-th>
                                         <b-th class="text-center">Current Price</b-th>
