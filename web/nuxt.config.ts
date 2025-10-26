@@ -56,7 +56,8 @@ export default defineNuxtConfig({
   sanctum: {
     baseUrl: process.env.ENDPOINT_BASE_URL, // Laravel API
     redirect: {
-        onLogin: '/dashboard', // Custom route after successful login
+        // onLogin: '/dashboard', // Custom route after successful login
+        onLogin: '/user-events', // Custom route after successful login
         onAuthOnly: '/login',
     },
     endpoints: {
@@ -73,6 +74,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseURL: process.env.ENDPOINT_BASE_URL || 'http://localhost:8000',
+
+      webUrl: process.env.CLIENT_BASE_URL || 'http://localhost:3000',
     },
+
   },
 })

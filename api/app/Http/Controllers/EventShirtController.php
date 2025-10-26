@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\EventShirt;
 use Illuminate\Http\Request;
+use App\Http\Resources\EventResource;
 
 class EventShirtController extends Controller
 {
@@ -26,9 +28,23 @@ class EventShirtController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, EventShirt $eventShirt)
     {
         //
+        try {
+            //code...
+            $eventShirts = $eventShirt->create([
+                'event_id' => $request->event_id, 
+                'shirt_title' => $request->shirt_title, 
+                'shirt_description' => $request->shirt_description, 
+                'shirt_sizes' => json_encode($request->shirt_sizes), 
+            ]);
+
+            return success($eventShirts, 'Event Ages successfully added.');
+
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
+        }
     }
 
     /**
@@ -58,8 +74,16 @@ class EventShirtController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EventShirt $eventShirt)
+    public function destroy(EventShirt $eventShirt, Event $events)
     {
         //
+        try {
+            //code...
+            $event = $events->find($eventShirt->event_id);
+            $eventShirt->delete();
+            return success(new EventResource($event), 'Event shirt successfully deleted.');
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
+        }
     }
 }

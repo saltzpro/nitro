@@ -6,7 +6,7 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
         middleware: ['sanctum:auth'],
     });
 
-    const event_id = ref(1);
+    const event_id = ref(localStorage.getItem('selected-event'));
     
     const auth = useSanctumUser();
     const event = useEvent()
@@ -17,7 +17,7 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
     const isBusyRegistration = ref(false)
     const isBusyConfirmed = ref(false)
     const isBusyFulfil = ref(false)
-    const registrations = ref([])
+    const registrations = ref({})
 
     const openParticipantInformation = ref(false)
     const selectedParticipants = ref(null)
@@ -51,7 +51,7 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
         isBusyRegistration.value = true
         isBusyRecent.value = false
         await getRegistrations('all')
-        isBusyRegistration.value = false,
+        isBusyRegistration.value = false
         await event.getDashboardSummary(event_id.value)
         await recentlyActivities()
     }

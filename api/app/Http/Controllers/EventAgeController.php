@@ -26,9 +26,22 @@ class EventAgeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, EventAge $eventAge)
     {
         //
+        try {
+            //code...
+            $eventAges = $eventAge->create([
+                'event_id' => $request->event_id, 
+                'age_from' => $request->age_from, 
+                'age_to' => $request->age_to, 
+            ]);
+
+            return success($eventAges, 'Event Ages successfully added.');
+
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
+        }
     }
 
     /**
@@ -61,5 +74,12 @@ class EventAgeController extends Controller
     public function destroy(EventAge $eventAge)
     {
         //
+        try {
+            //code...
+            $eventAge->delete();
+            return success([], 'Category successfully deleted.');
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
+        }
     }
 }

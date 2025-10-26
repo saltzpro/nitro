@@ -11,7 +11,12 @@ class EventCategory extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'event_id', 'name', 'sub_name', 'category_image', 'original_price', 'current_price'
+        'event_id', 
+        'name', 
+        'sub_name', 
+        'category_image', 
+        'original_price', 
+        'current_price'
     ];
     
 }

@@ -53,11 +53,63 @@ export function useEvent() {
         
         return response
     }
+    
+    async function userAddedEvent() {
+        const response = await es.userAddedEvent()
+
+        return response
+    }
+
+    async function updateSelectedEvent(payloads: any) {
+        const response = await es.updateSelectedEvent(payloads)
+
+        return response
+    }
+
+    async function createCategory(payloads: any) {
+        const response = await es.createCategory(payloads)
+
+        return response
+    }
+
+    async function createPickup(payloads: any) {
+        const response = await es.createPickup(payloads)
+
+        return response
+    }
+
+    async function createShirt(payloads: any) {
+        const response = await es.createShirt(payloads)
+
+        return response
+    }
+
+    async function createAge(payloads: any) {
+        const response = await es.createAge(payloads)
+
+        return response
+    }
+
+    async function deleteRecord(payloads: any, idx: any, type: any) {
+        let response
+        if (type == 'shirt') {
+            response = await es.deleteShirt(payloads, idx)
+        } else if (type == 'age') {
+            response = await es.deleteAge(payloads, idx)
+        } else if (type == 'pickup') {
+            response = await es.deletePickup(payloads, idx)
+        } else if (type == 'category') {
+            response = await es.deleteCategory(payloads, idx)
+        }
+
+        return response
+    }
 
 
     return {
         getEvent, storeParticipant, getPendingRegistration, getDashboardSummary, recentlyActivities,
-        storeCollection, getEventList, eventListForUser, allEvents, getSelectedEvent 
+        storeCollection, getEventList, eventListForUser, allEvents, getSelectedEvent, userAddedEvent,
+        updateSelectedEvent, createCategory, createPickup, createShirt, createAge, deleteRecord
     }
 
 }

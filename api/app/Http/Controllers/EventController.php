@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\EventResource;
 
 class EventController extends Controller
@@ -93,6 +95,45 @@ class EventController extends Controller
                 'message' => $e->getMessage(),
                 'status' => 'error'
             ], 200);
+        }
+    }
+
+    public function userEvents(Request $request, Event $events) {
+        try {
+            $user = Auth::user();
+            $getEvents = $events->where('user_id', $user->id)->orderBy('created_at', 'desc');
+
+            return EventResource::collection($getEvents->paginate(10));
+            
+        } catch (\Exception  $e) {
+            //throw $th;
+
+            return response()->json([
+                'data' => [],
+                'message' => $e->getMessage(),
+                'status' => 'error'
+            ], 200);
+        }
+    }
+
+    public function updateSelectedEvent(Request $request, Event $event) {
+        
+        try {
+            $event->title = $request->title;
+            $event->description = $request->description;
+            $event->event_start = Carbon::parse($request->event_start);
+            $event->event_end = Carbon::parse($request->event_end);;
+            $event->location = $request->location;
+            $event->fb_link = $request->fb_link;
+            $event->event_waiver = $request->event_waiver;
+            $event->terms_and_condition = $request->terms_and_condition;
+            $event->pickup_notes = $request->pickup_notes;
+            $event->save();
+
+
+            return success(new EventResource($event), 'Event successfully updated.');
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
         }
     }
 

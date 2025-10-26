@@ -26,9 +26,25 @@ class EventCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, EventCategory $eventCategory)
     {
         //
+        try {
+            //code...
+            $eventCategories = $eventCategory->create([
+                'event_id' => $request->event_id, 
+                'name' => $request->name, 
+                'sub_name' => $request->sub_name, 
+                'category_image' => $request->category_image, 
+                'original_price' => $request->original_price, 
+                'current_price' => $request->current_price
+            ]);
+
+            return success($eventCategories, 'Event Category successfully added.');
+
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
+        }
     }
 
     /**
@@ -61,5 +77,12 @@ class EventCategoryController extends Controller
     public function destroy(EventCategory $eventCategory)
     {
         //
+        try {
+            //code...
+            $eventCategory->delete();
+            return success([], 'Category successfully deleted.');
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
+        }
     }
 }

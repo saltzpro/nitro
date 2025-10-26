@@ -10,6 +10,7 @@ class EventPickup extends Model
     use HasFactory;
 
     protected $fillable = [
-        'event_id', 'pickup_lists'
+        'event_id', 
+        'pickup_lists'
     ];
 }

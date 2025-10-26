@@ -4,7 +4,11 @@ export function useLogin() {
     const auth = useSanctumUser();
 
     async function loginUser(payload:any) {
-        await user.login(payload)
+        const getUser = await user.login(payload)
+
+        if (getUser.data) {
+
+        }
     }
 
 

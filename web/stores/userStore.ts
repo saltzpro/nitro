@@ -16,9 +16,10 @@ export const useUserStore  = defineStore('user', {
         
         async login(payload) {
             const { login, isAuthenticated } = useSanctumAuth()
-
+            
             try {
-                await login(payload)
+                const user = await login(payload)
+                return user;
             } catch (e) {
                 const error = useApiError(e);
                 var errorBody = ''
@@ -33,7 +34,7 @@ export const useUserStore  = defineStore('user', {
                 }
                 useNuxtApp().$toast(errorBody, {type: 'error'});
                 
-                return
+                return false
             }
         },
 

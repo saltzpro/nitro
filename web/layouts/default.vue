@@ -9,39 +9,17 @@
     
     const isLoading = ref(false)
 
-    async function logoutUser() {
-        isLoading.value = true
-        await us.logoutUser()
-        isLoading.value = false
-    }
 
     onMounted(async () => {
         await nextTick()
-        const res = await event.eventListForUser()
-
-        if (!getData('selected-event')) {
-            setData('selected-event', auth.value.id, 1, 'd')
-        }
-
     })
 
 </script>
 
 <template>
     <div class="default-container admin position-relative">
-        <div class="header-container px-4 shadow-sm position-sticky d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center gap-10">
-                <span class="fw-bold">Event name: </span>
-                <b-button variant="danger" size="sm">Select event</b-button>
-            </div>
-            <b-dropdown variant="nitro-header-dropdown">
-                <template #button-content>
-                    <span class="fw-bold pr-4">{{ auth.name }}</span>
-                </template>
-                <b-dropdown-item>Account Information</b-dropdown-item>
-                <b-dropdown-item @click="logoutUser">Logout</b-dropdown-item>
-            </b-dropdown>
-        </div>
+
+        <card-header></card-header>
 
         <div class="sidebar-menu-container position-absolute shadow-sm d-flex flex-column">
             <nuxt-link to="/dashboard" class="menu w-100 py-2 cursor-pointer d-flex">
@@ -60,12 +38,6 @@
 
 <style lang="scss" scoped>
     .admin {
-        .header-container {
-            height: 70px;
-            top: 0px;
-            z-index: 10;
-            background-color: $white1;
-        }
 
         .sidebar-menu-container {
             height: 100vh;

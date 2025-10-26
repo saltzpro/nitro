@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { inject, nextTick, onMounted, ref } from 'vue'
+    import { nextTick, onMounted, ref } from 'vue'
     const event = useEvent()
     const es = useEventStore()
     const router = useRouter()
@@ -7,7 +7,7 @@
     const erStore: any = useErrorStore()
 
     definePageMeta({
-        layout: 'registration',
+        layout: 'landingpage',
     });
 
     const isLoading = ref(false)
@@ -19,7 +19,7 @@
 
     const registrationSteps = ref(1)
 
-    const eventId = ref(1)
+    const eventId = ref(router.currentRoute.value.params.eid)
 
     const adminFee = 35.00
 
@@ -68,7 +68,7 @@
                 return n
             })
         }
-
+        resetSelected()
         initRootColorStyle()
     })
 
@@ -81,14 +81,17 @@
     }
 
     function selectSize(idx: any, selected: any) {
-        shirts.value.map((n: any) => {
-            n.selected_size = ''
-            return n
-        })
-
         shirts.value[idx].selected_size = selected
         shirts.value[idx].isAlreadySelect = true
 
+    }
+
+    function resetSelected() {
+        shirts.value.map((n: any) => {
+            n.selected_size = ''
+            n.isAlreadySelect = false
+            return n
+        })
     }
 
     function totalOrder() {
@@ -161,14 +164,14 @@
         const rootElement = document.documentElement;
         // Set a new CSS custom property or modify an existing one
         rootElement.style.setProperty('--event-bg-color', '#ffffff');
-        rootElement.style.setProperty('--event-primary-color', '#ff0000');
+        rootElement.style.setProperty('--event-primary-color', '#0d6efd');
         rootElement.style.setProperty('--event-text-selected-color', '#ffffff');
     }
     
 </script>
 
 <template>
-    <div v-if="es.selected" class="registration-container container padding-top-60" :class="color">
+    <div v-if="es.selected" class="registration-container container padding-top-60">
         <div class="d-flex justify-content-center mb-4">
             <b-button-group size="lg" class="tab-button-header w-100 shadow">
                 <b-button variant="tab-select" class="fw-bold" :class="{'selected' : registrationSteps == 1}" @click="registrationSteps = 1">CATEGORY</b-button>
@@ -501,7 +504,6 @@
             <b-button v-if="registrationSteps != 1 && registrationSteps != 4" @click="registrationSteps++" variant="primary" class="box-container px-5 height-50 fw-bold">NEXT</b-button>
             <b-button v-if="registrationSteps == 4" variant="primary" class="box-container px-5 height-50 fw-bold" @click="storeParticipant()">CHECKOUT NOW</b-button>
         </div>
-
     </div>
 </template>
 

@@ -15,7 +15,7 @@ import { nextTick, onMounted, ref } from "vue"
     onMounted(async () => {
         isLoading.value = true
         await nextTick()
-        await event.getEvent(eid.value)
+        await event.getSelectedEvent({id: eid.value})
         countdownTime.value = es.selected.event_start_at
         isLoading.value = false
     })

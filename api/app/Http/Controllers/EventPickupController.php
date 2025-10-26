@@ -26,9 +26,20 @@ class EventPickupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, EventPickup $eventPickup)
     {
-        //
+        try {
+            //code...
+            $eventPickups = $eventPickup->create([
+                'event_id' => $request->event_id, 
+                'pickup_lists' => $request->pickup_lists
+            ]);
+
+            return success($eventPickups, 'Event pickup successfully added.');
+
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
+        }
     }
 
     /**
@@ -61,5 +72,12 @@ class EventPickupController extends Controller
     public function destroy(EventPickup $eventPickup)
     {
         //
+        try {
+            //code...
+            $eventPickup->delete();
+            return success([], 'Pickup successfully deleted.');
+        } catch (\Exception $e) {
+            return error(null, $e->getMessage());
+        }
     }
 }

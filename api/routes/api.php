@@ -3,8 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventAgeController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\EventShirtController;
+use App\Http\Controllers\EventPickupController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\EventCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,14 +29,33 @@ Route::middleware('auth:sanctum')->group(function() {
         
     Route::prefix('/v1')->group(function() {
         Route::prefix('/organizer')->group(function() {
-            Route::get('/registration/{status}', [RegistrationController::class, 'listOfRegistration']);
-            Route::get('/recently-activities', [RegistrationController::class, 'recentlyActivities']);
-            Route::get('/dashboard-summary', [RegistrationController::class, 'dashboardSummary']);
             Route::resource('/collections', CollectionController::class);
+            Route::get('/user-events', [EventController::class, 'userEvents']);
+        });
+        
+        Route::middleware(['selected.event'])->group(function () {
+            Route::prefix('/organizer')->group(function() {
+                Route::get('/dashboard-summary', [RegistrationController::class, 'dashboardSummary']);
+                Route::get('/recently-activities', [RegistrationController::class, 'recentlyActivities']);
+                Route::get('/registration/{status}', [RegistrationController::class, 'listOfRegistration']);
+
+            });
+            
+            
+            Route::get('/event-list', [EventController::class, 'eventList']);
         });
 
         Route::prefix('/admin')->group(function() {
             Route::get('/all-events', [EventController::class, 'allEvents']);
+            Route::put('/all-events/{event}', [EventController::class, 'updateSelectedEvent']);
+            Route::prefix('/event')->group(function() {
+
+            });
+            
+            Route::resource('/event-pickup', EventPickupController::class);
+            Route::resource('/event-category', EventCategoryController::class);
+            Route::resource('/event-age', EventAgeController::class);
+            Route::resource('/event-shirt', EventShirtController::class);
         });
     });
 });
@@ -46,5 +69,4 @@ Route::prefix('/v1')->group(function () {
             Route::get('/all', [RegistrationController::class, '']);
         });
 
-        Route::get('/event-list', [EventController::class, 'eventList']);
 });
