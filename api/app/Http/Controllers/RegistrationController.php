@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Collection;
-use App\Models\Registration;
-use Illuminate\Http\Request;
-use App\Models\ParticipantLog;
-use App\Models\ParticipantTshirt;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\RegistrationResource;
+use App\Mail\RegistrationCompleteMail;
+use App\Models\Collection;
+use App\Models\ParticipantLog;
+use App\Models\ParticipantTshirt;
+use App\Models\Registration;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class RegistrationController extends Controller
 {
@@ -86,6 +88,17 @@ class RegistrationController extends Controller
             );
         }
 
+        $data = [
+            'transaction_number' => $transactionNumber,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'event_id' => $request->event_id,
+        ];
+
+        Mail::to($request->email)
+            ->send(new RegistrationCompleteMail($data));
+            
         return [
             'data' => $newRegister,
             'status' => 'success',

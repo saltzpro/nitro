@@ -31,9 +31,9 @@ class EventSeeder extends Seeder
             'pickup_notes' => 'bisag asa lang ninyo kuhaa bahala namo'
         ]);
 
-        EventCategory::create([ 'event_id' => $event->id, 'name' => '5KM', 'sub_name' => 'Inclusion tanan pangapil namo ui.' ]);
-        EventCategory::create([ 'event_id' => $event->id, 'name' => '10KM', 'sub_name' => 'Inclusion tanan pangapil namo ui.' ]);
-        EventCategory::create([ 'event_id' => $event->id, 'name' => '20KM', 'sub_name' => 'Inclusion tanan pangapil namo ui.' ]);
+        EventCategory::create([ 'event_id' => $event->id, 'name' => '5KM', 'sub_name' => 'Inclusion tanan pangapil namo ui.', 'original_price' => '700', 'current_price' => '700' ]);
+        EventCategory::create([ 'event_id' => $event->id, 'name' => '10KM', 'sub_name' => 'Inclusion tanan pangapil namo ui.', 'original_price' => '1000', 'current_price' => '1000' ]);
+        EventCategory::create([ 'event_id' => $event->id, 'name' => '20KM', 'sub_name' => 'Inclusion tanan pangapil namo ui.', 'original_price' => '1500', 'current_price' => '1500' ]);
 
         EventAge::create([ 'event_id' => $event->id, 'age_from' => '18', 'age_to' => '29' ]);
         EventAge::create([ 'event_id' => $event->id, 'age_from' => '30', 'age_to' => '40' ]);
