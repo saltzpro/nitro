@@ -38,7 +38,8 @@ class RegistrationResource extends JsonResource
             'emergency_contact_number' => $this->emergency_contact_number,
             'tshirts' => ParticipantTshirtResource::collection($this->tshirts),
             'event_status' => $this->event_status,
-            'participant_logs' => $this->participant_logs
+            'participant_logs' => $this->participant_logs,
+            'proof' => $this->proof
         ];
     }
 }

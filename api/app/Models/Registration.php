@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Proof;
 use App\Models\ParticipantLog;
 use App\Models\ParticipantTshirt;
 use Illuminate\Database\Eloquent\Model;
@@ -50,5 +51,9 @@ class Registration extends Model
 
     public function participant_logs() {
         return $this->hasMany(ParticipantLog::class);
+    }
+
+    public function proof() {
+        return $this->hasOne(Proof::class);
     }
 }

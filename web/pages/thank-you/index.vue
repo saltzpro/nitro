@@ -22,15 +22,20 @@
                 <h1 class="display-5 fw-bold text-center">Thank You for Registering our event!</h1>
             </div>
 
-            <div class="mt-5 mb-4">
+            <div class="card-title py-2 d-flex w-100 justify-content-center align-items-center flex-column gap-6">
+                <span>Transaction number</span>
+                <h3 class="fw-bold">{{ router.currentRoute.value.query.transaction_number }}</h3>
+            </div>
+
+            <div class="mb-4">
                 <p>
-                    Your registration (transaction Code: <span class="fw-bold">{{ router.currentRoute.value.query.transaction_number }}</span>) is now for review. To complete your payment via <span class="fw-bold">GCash</span> please follow <span class="fw-bold">GCash Payment Guide (Own Account or Someone Else’s)</span> 
+                    Your registration transaction number is now for review. To complete your payment via <span class="fw-bold">GCash</span> please follow <span class="fw-bold">GCash Payment Guide (Own Account or Someone Else’s)</span> 
                 </p>
 
 
                 <div>
                     <div class="mb-2">
-                        <span class="fw-bold">How to pay via GCASH</span>
+                        <h4 class="fw-bold">How to pay via GCASH</h4>
                     </div>
                     <ol>
                         <li>Open the GCash App on your phone.</li>
@@ -48,7 +53,7 @@
 
                 <div>
                     <div class="mb-2">
-                        <span class="fw-bold">💳 Pay via Bank Transfer</span>
+                        <h4 class="fw-bold">💳 Pay via Bank Transfer</h4>
                     </div>
                     <ol>
                         <li>
@@ -85,19 +90,24 @@
                 </div>
 
                 <div class="note mb-3">
-                    <strong>After GCASH or Bank Transfer</strong><br>
+                    <h4 class="fw-bold">After GCASH or Bank Transfer</h4>
                     ✅ Take a screenshot or photo of your payment confirmation. <br>
                     ✅ Send the proof of payment (with your <strong>Name</strong>, <strong>Amount</strong>, <strong>Reference Number</strong>) to this transaction page <a :href="`nitro.com/transaction-confirmation?transaction=${router.currentRoute.value.query.transaction_number}`">
                         {{ `${webUrl}/transaction-confirmation?transaction=${router.currentRoute.value.query.transaction_number}` }}
                     </a>.
                 </div>
 
-                <div class="note">
+                <div class="note mb-3">
                     <strong>Sample Confirmation:</strong><br>
-                    Name: <strong>Jesus Nazareno (09123456789)</strong>.<br>
+                    Transaction number: <b>123456789011</b> <br>
+                    Name: <strong>Jesus Nazareno</strong>.<br>
+                    Phone number: <b>09123456789</b> <br>
                     Amount: <strong>2,500.00</strong>.<br>
                     Reference Number: <strong>GCASH123456789</strong><br>
                 </div>
+
+                <b-button variant="primary" class="py-2 w-100" :href="`${webUrl}/transaction-confirmation?transaction=${router.currentRoute.value.query.transaction_number}`">Go to Transaction confirmation page</b-button>
+
             </div>
 
         </div>
@@ -106,6 +116,6 @@
 
 <style lang="scss">
     .thank-you-container {
-        height: 100vh;
+            
     }
 </style>

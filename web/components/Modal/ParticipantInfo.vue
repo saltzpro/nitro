@@ -56,11 +56,6 @@
                     <b-badge v-if="form.event_status == 'confirmed'" variant="info" class="text-uppercase">{{ form.event_status }}</b-badge>
                     <b-badge v-if="form.event_status == 'fulfil'" variant="success" class="text-uppercase">{{ form.event_status }}</b-badge>
                 </div>
-
-                <b-button @click="moveToNextStatus()" v-if="form.event_status == 'pending' || form.event_status == 'confirm'" variant="primary" :disabled="isLoading">
-                    <span v-if="form.event_status == 'pending'">Move to confirm</span>
-                    <span v-if="form.event_status == 'confirm'">Move to fulfill</span>
-                </b-button>
             </div>
             
             <div class="mb-2">
@@ -119,20 +114,27 @@
                 </b-col>
             </b-row>
 
-            <div class="mt-4 mb-2" v-for="(item, i) in form.tshirts" :key="`tshirt-${i}`">
-                <div class="fw-bold text-center mb-2">TSHIRT INFORMATION</div>
-                
-                <div class="mb-2">
-                    <label class="mb-2" for="email">{{ item.tshirt.shirt_title }}</label>
-                    <b-input v-model="item.size" id="email" class="nitro-input w-100" disabled></b-input>
-                </div>
 
-                <div class="mb-2">
-                        
-                    <label class="mb-2" for="pickup_lists">Pickup area</label>
-                    <b-input v-model="info.pickup_notes.pickup_lists" id="pickup_lists" class="nitro-input w-100" disabled></b-input>
-                </div>
-            </div>
+            <b-row class="my-4">
+                <b-col>
+
+                    <div class="fw-bold text-center">SHIRT INFORMATION</div>
+                    
+                    <div class="mb-2" v-for="(item, i) in form.tshirts" :key="`tshirt-${i}`">
+                        <label class="mb-2" for="email">{{ item.tshirt.shirt_title }}</label>
+                        <b-input v-model="item.size" id="email" class="nitro-input w-100" disabled></b-input>
+                    </div>
+                </b-col>
+            </b-row>
+
+            <b-row class="mb-2">
+                <b-col>
+                    <div>
+                        <label class="mb-2" for="pickup_lists">Pickup area</label>
+                        <b-input v-model="info.pickup_notes.pickup_lists" id="pickup_lists" class="nitro-input w-100" disabled></b-input>
+                    </div>
+                </b-col>
+            </b-row>
             
             <b-row class="mt-4 mb-2">
                 <div class="fw-bold text-center mb-2">IN CASE OF EMERGENCY DETAILS</div>
@@ -147,6 +149,19 @@
                 <b-col sm="6">
                     <label class="mb-2" for="emergency_contact_person">Contact number:</label>
                     <b-input v-model="form.emergency_contact_person" id="emergency_contact_person" class="nitro-input w-100" disabled></b-input>
+                </b-col>
+            </b-row>
+
+            <b-row v-if="info.proofs || form.event_status == 'pending' || form.event_status == 'confirm'" class="mt-5 mb-3">
+                <b-col>
+                    <div class="d-flex gap-10 justify-content-center align-items-center w-100">
+                        <b-button v-if="info.proofs" variant="primary" class="height-50 px-4">View proof of payment</b-button>
+
+                        <b-button @click="moveToNextStatus()" v-if="form.event_status == 'pending' || form.event_status == 'confirm'" variant="primary" :disabled="isLoading" class="height-50">
+                            <span v-if="form.event_status == 'pending'">Move to confirm</span>
+                            <span v-if="form.event_status == 'confirm'">Move to fulfill</span>
+                        </b-button>
+                    </div>
                 </b-col>
             </b-row>
         </div>
