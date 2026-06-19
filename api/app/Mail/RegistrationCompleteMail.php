@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 namespace App\Mail;
 
@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RegistrationCompleteMail extends Mailable
+class RegistrationCompleteMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class RegistrationCompleteMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Registration Complete Mail',
+            subject: $this->data['subject'] ?? 'Registration Complete',
         );
     }
 

@@ -15,7 +15,7 @@
     const collapseWaiver = ref(true)
     const collapseRules = ref(true)
 
-    const categoryChoice = ref(null)
+    const categoryChoice: any = ref(null)
 
     const registrationSteps = ref(1)
 
@@ -47,7 +47,8 @@
         pickup_notes: '',
         total_amount: 0,
         shirts: [],
-        admin_fees: adminFee
+        admin_fees: adminFee,
+        orderSummary: []
     })
 
     const shirts = ref(null)
@@ -111,6 +112,14 @@
         form.value.total_amount = totalOrder()
         form.value.shirts = shirts.value
 
+        const orders = [
+            { order: `${categoryChoice.value.name} category`, amount: categoryChoice.value.current_price },
+            { order: `${getNoneSelected[0].shirt_title} (size: ${getNoneSelected[0].selected_size})`, amount: 0 },
+            { order: 'Admin fee', amount: adminFee },
+        ]
+        
+        form.value.orderSummary = orders;
+
         const response = await event.storeParticipant(form.value) 
         
         if (response && response.status == 'success') {
@@ -133,7 +142,8 @@
                 pickup_notes: '',
                 total_amount: 0,
                 shirts: [],
-                admin_fees: adminFee
+                admin_fees: adminFee,
+                orderSummary: []
             }
             router.push({
                 path: '/thank-you',

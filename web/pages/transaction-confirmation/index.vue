@@ -5,29 +5,53 @@
         layout: 'registration',
     });
 
+    const es = useEventStore()
+
     const router = useRouter()
     const config = useRuntimeConfig()
 
     const form = ref({
         name: '',
         phone: '',
+        paymentFrom: '',
         reference: '',
         amount: '',
+        proof: null,
     })
 
-    const imageUrl = ref(null)
-    const fileInput = ref(null)
+    const imageUrl: any = ref(null)
+    const fileInput: any = ref(null)
+    const proofImage: any = ref(null)
 
     function onFileChange(event: any) {
         const file = event.target.files[0]
         if (!file) return
 
+        proofImage.value = file
         // Create a temporary URL for preview
-        imageUrl.value = URL.createObjectURL(file)
+        imageUrl.value = URL.createObjectURL(proofImage.value)
     }
 
     function triggerFileInput() {
         fileInput.value.click()
+    }
+
+    async function submitUploadForm() {
+        const transactionNumber: any = router.currentRoute.value.query.transaction
+        const formData = new FormData()
+        formData.append('name', form.value.name)
+        formData.append('phone', form.value.phone)
+        formData.append('paymentFrom', form.value.paymentFrom)
+        formData.append('reference', form.value.reference)
+        formData.append('amount', form.value.amount)
+        formData.append('transaction_number', transactionNumber)
+
+        if (proofImage.value) {
+            formData.append('proof', proofImage.value)
+        }
+
+        const toSaveAndNavigate = await es.transactionSendProof(formData)
+        
     }
 </script>
 
@@ -37,12 +61,15 @@
             <div class="card-title mb-3 py-2">
                 <h2 class="display-6 fw-bold text-center">Transaction Confirmation</h2>
             </div>
-            <b-form>
+            <b-form @submit.prevent="submitUploadForm" enctype="multipart/form-data">
                 <b-form-group class="mb-3" id="name-group" label="Name" label-for="name">
                     <b-form-input id="name" v-model="form.name" placeholder="Enter name" required></b-form-input>
                 </b-form-group>
                 <b-form-group class="mb-3" id="phone-group" label="Phone Number" label-for="phone">
                     <b-form-input id="phone" v-model="form.phone" placeholder="Enter phone number" required></b-form-input>
+                </b-form-group>
+                <b-form-group class="mb-3" id="payment-from-group" label="Payment Source" label-for="payment-from">
+                    <b-form-input id="payment-from" v-model="form.paymentFrom" placeholder="Enter payment source (e.g. bank name, e-wallet)" required></b-form-input>
                 </b-form-group>
                 <b-form-group class="mb-3" id="reference-group" label="Reference Number" label-for="reference">
                     <b-form-input id="reference" v-model="form.reference" placeholder="Enter reference number" required></b-form-input>
@@ -57,7 +84,7 @@
                 </div>
                 
                 <input type="file" ref="profileImage" @change="onFileChange" accept=".png, .jpeg, .jpg" class="d-none">
-                <b-button class="mb-3" variant="primary" @click="$refs.profileImage.click()">Upload transaction proof</b-button>
+                <b-button class="mb-3" variant="primary" @click="$refs.profileImage.click()">Upload payment proof</b-button>
                 
                 <b-button type="submit" variant="primary" class="w-100">Submit</b-button>
             </b-form>

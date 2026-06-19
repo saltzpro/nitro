@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\ParticipantTshirtResource;
+use App\Http\Resources\PaymentProofResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\ParticipantTshirtResource;
 
 class RegistrationResource extends JsonResource
 {
@@ -22,7 +23,7 @@ class RegistrationResource extends JsonResource
             'category' => $this->selected_category,
             'event_category_total' => $this->event_category_total,
             'admin_fees' => $this->admin_fees,
-            'total_payment' => $this->event_category_total + $this->admin_fees,
+            'total_payment' => $this->event_category_total,
             'pickup_notes' => $this->pickup_notes,
             'first_name' => $this->first_name,
             'middle_name' => $this->middle_name,
@@ -39,7 +40,7 @@ class RegistrationResource extends JsonResource
             'tshirts' => ParticipantTshirtResource::collection($this->tshirts),
             'event_status' => $this->event_status,
             'participant_logs' => $this->participant_logs,
-            'proof' => $this->proof
+            'payment_proof' => PaymentProofResource::collection($this->payment_proof)
         ];
     }
 }

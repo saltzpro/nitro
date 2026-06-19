@@ -105,11 +105,16 @@ export function useEvent() {
         return response
     }
 
+    async function transactionSendProof(payloads: any) {
+        const response = await es.transactionSendProof(payloads)    
+        return response
+    }
+
 
     return {
         getEvent, storeParticipant, getPendingRegistration, getDashboardSummary, recentlyActivities,
         storeCollection, getEventList, eventListForUser, allEvents, getSelectedEvent, userAddedEvent,
-        updateSelectedEvent, createCategory, createPickup, createShirt, createAge, deleteRecord
+        updateSelectedEvent, createCategory, createPickup, createShirt, createAge, deleteRecord, transactionSendProof
     }
 
 }

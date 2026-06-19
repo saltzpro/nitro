@@ -92,7 +92,7 @@
                 <div class="note mb-3">
                     <h4 class="fw-bold">After GCASH or Bank Transfer</h4>
                     ✅ Take a screenshot or photo of your payment confirmation. <br>
-                    ✅ Send the proof of payment (with your <strong>Name</strong>, <strong>Amount</strong>, <strong>Reference Number</strong>) to this transaction page <a :href="`nitro.com/transaction-confirmation?transaction=${router.currentRoute.value.query.transaction_number}`">
+                    ✅ Send the proof of payment (with your <strong>Name</strong>, <strong>Amount</strong>, <strong>Reference Number</strong>) to this transaction page <a :href="`${webUrl}/transaction-confirmation?transaction=${router.currentRoute.value.query.transaction_number}`">
                         {{ `${webUrl}/transaction-confirmation?transaction=${router.currentRoute.value.query.transaction_number}` }}
                     </a>.
                 </div>

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { GET_EVENT, ADD_PARTICIPANTS, REGISTRATION_LIST, DASHBOARD_SUMMARY, RECENT_ACTIVITIES, STORE_COLLECTION, EVENTS_LIST,
     USER_EVENTS, ALL_EVENT_LIST, SELECTED_EVENT, USER_ADDED_EVENT, EVENT_CATEGORY, EVENT_PICKUP, EVENT_AGE,
-    EVENT_SHIRT
+    EVENT_SHIRT, UPLOAD_FORM
  } from '@/endpoints/endpoints'
 import { useApi } from '@/composables/useApi'
 
@@ -255,5 +255,12 @@ export const useEventStore = defineStore('event', {
             return resData
         },
 
+        async transactionSendProof(payloads: any) {
+            const response = await useApi().post(`${UPLOAD_FORM}`, payloads)
+            const resData = response.data.value
+
+            useNuxtApp().$toast(resData.message, {type: resData.status});
+            return resData
+        }
     },
 });

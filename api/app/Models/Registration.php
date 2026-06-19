@@ -53,7 +53,7 @@ class Registration extends Model
         return $this->hasMany(ParticipantLog::class);
     }
 
-    public function proof() {
-        return $this->hasOne(Proof::class);
+    public function payment_proof() {
+        return $this->hasMany(PaymentProof::class);
     }
 }

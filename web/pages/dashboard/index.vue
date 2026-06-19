@@ -191,6 +191,7 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
                                     <b-td class="text-center" v-if="item.event_category_total">{{ utils.currencyFormat(item.event_category_total) }}</b-td>
                                     <b-td class="text-center">
                                         <b-badge v-if="item.event_status == 'pending'" variant="danger" class="text-uppercase">{{ item.event_status }}</b-badge>
+                                        <b-badge v-if="item.event_status == 'for review'" variant="warning" class="text-uppercase">{{ item.event_status }}</b-badge>
                                         <b-badge v-if="item.event_status == 'confirmed'" variant="info" class="text-uppercase">{{ item.event_status }}</b-badge>
                                         <b-badge v-if="item.event_status == 'fulfil'" variant="success" class="text-uppercase">{{ item.event_status }}</b-badge>
                                     </b-td>

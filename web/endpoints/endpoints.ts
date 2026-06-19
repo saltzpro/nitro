@@ -18,3 +18,5 @@ export const EVENT_CATEGORY = `api/v1/admin/event-category`
 export const EVENT_PICKUP = `api/v1/admin/event-pickup`
 export const EVENT_SHIRT = `api/v1/admin/event-shirt`
 export const EVENT_AGE = `api/v1/admin/event-age`
+
+export const UPLOAD_FORM = `api/v1/participants/transaction-send-proof`

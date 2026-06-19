@@ -67,6 +67,7 @@ Route::prefix('/v1')->group(function () {
         Route::resource('/participants', RegistrationController::class);
         Route::prefix('/participants')->group(function() {
             Route::get('/all', [RegistrationController::class, '']);
+            Route::post('/transaction-send-proof', [RegistrationController::class, 'transactionSendProof']);
         });
 
 });
