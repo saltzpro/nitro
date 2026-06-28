@@ -1,14 +1,18 @@
 <?php
 
+use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\EventAgeController;
+use App\Http\Controllers\EventCategoryController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventPickupController;
+use App\Http\Controllers\EventShirtController;
+use App\Http\Controllers\PaymentSourceController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\EventAgeController;
-use App\Http\Controllers\CollectionController;
-use App\Http\Controllers\EventShirtController;
-use App\Http\Controllers\EventPickupController;
-use App\Http\Controllers\RegistrationController;
-use App\Http\Controllers\EventCategoryController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::prefix('/organizer')->group(function() {
             Route::resource('/collections', CollectionController::class);
             Route::get('/user-events', [EventController::class, 'userEvents']);
+
+            Route::get('/event/{event}', [RegistrationController::class, 'getEventDetails']);
         });
         
         Route::middleware(['selected.event'])->group(function () {
@@ -55,19 +61,37 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::resource('/event-pickup', EventPickupController::class);
             Route::resource('/event-category', EventCategoryController::class);
             Route::resource('/event-age', EventAgeController::class);
-            Route::resource('/event-shirt', EventShirtController::class);
+            Route::resource('/event-shirt', EventShirtController::class);   
         });
+
+        Route::resource('/event', EventController::class)->only(['show', 'update']);
     });
 });
 
 Route::prefix('/v1')->group(function () {
         // Matches The "/url/users" URL
-        Route::resource('event' , EventController::class);
+        Route::resource('event' , EventController::class)->except(['show', 'update']);
 
         Route::resource('/participants', RegistrationController::class);
         Route::prefix('/participants')->group(function() {
             Route::get('/all', [RegistrationController::class, '']);
             Route::post('/transaction-send-proof', [RegistrationController::class, 'transactionSendProof']);
         });
+
+        Route::prefix('transaction')->group(function() {
+            Route::get('/orders-summary', [TransactionController::class, 'transactionOrders']);
+            Route::get('/create-checkout', [TransactionController::class, 'createPaymentCheckout']);
+            Route::get('/details', [TransactionController::class, 'transactionDetails']);
+        });
+
+        Route::prefix('/payment')->group(function() {
+            Route::get('/sources', [PaymentSourceController::class, 'paymentSources']);
+            Route::get('/success', [PaymentSourceController::class, 'paymentSuccessRedirect']);
+        });
+
+        Route::prefix('/maya')->group(function() {
+            Route::post('/webhook', [PaymentSourceController::class, 'paymentSuccess']);
+        });
+
 
 });

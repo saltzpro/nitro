@@ -30,7 +30,9 @@ class Registration extends Model
         'dob',
         'emergency_contact_person',
         'emergency_relationship',
-        'emergency_contact_number'
+        'emergency_contact_number',
+        'maya_checkout_url',
+        'maya_checkout_id'
     ];
 
     public function tshirts() {

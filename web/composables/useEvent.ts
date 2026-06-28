@@ -110,11 +110,31 @@ export function useEvent() {
         return response
     }
 
+    async function getTransactionOrders(payloads: any) {
+        const response = await es.transactionOrders(payloads)
+        return response
+    }
+
+    async function getPaymentSources(payloads: any) {
+        const response = await es.paymentSourceList(payloads)
+        return response
+    }
+
+    async function transactionDetails(payloads: any) {
+        const response = es.transactionDetails(payloads)
+        return response
+    }
+
+    async function getOrganizerEvent(payloads: any) {
+        const response = await es.getOrganizerEvent(payloads)
+        return response
+    }
 
     return {
         getEvent, storeParticipant, getPendingRegistration, getDashboardSummary, recentlyActivities,
         storeCollection, getEventList, eventListForUser, allEvents, getSelectedEvent, userAddedEvent,
-        updateSelectedEvent, createCategory, createPickup, createShirt, createAge, deleteRecord, transactionSendProof
+        updateSelectedEvent, createCategory, createPickup, createShirt, createAge, deleteRecord, transactionSendProof, 
+        getTransactionOrders, getPaymentSources, transactionDetails, getOrganizerEvent
     }
 
 }

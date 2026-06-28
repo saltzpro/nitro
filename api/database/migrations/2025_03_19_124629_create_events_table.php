@@ -22,14 +22,14 @@ return new class extends Migration
             $table->string('fb_link')->nullable();
             $table->text('event_waiver')->nullable();
             $table->text('terms_and_condition')->nullable();
-            $table->text('pickup_notes')->nullable();
+            $table->text('pickup_notes')->nullable();   
             $table->softDeletes();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.e
      */
     public function down(): void
     {

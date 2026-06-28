@@ -11,6 +11,7 @@ use App\Models\ParticipantTshirt;
 use App\Models\PaymentProof;
 use App\Models\Registration;
 use App\Models\Transaction;
+use App\Services\MayaService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class RegistrationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RegistrationRequest $request, Registration $registration, ParticipantTshirt $tshirts, ParticipantLog $participantLogs)
+    public function store(RegistrationRequest $request, Registration $registration, ParticipantTshirt $tshirts, ParticipantLog $participantLogs, MayaService $mayaService)
     {
         DB::beginTransaction();
 
@@ -76,12 +77,24 @@ class RegistrationController extends Controller
             ]);
 
             $totalAmount = 0;
+            
             foreach ($request->orderSummary as $order) {
                 $orders[] = Transaction::create([
                     'registration_id' => $newRegister->id,
                     'order' => $order['order'],
                     'amount' => $order['amount']
                 ]);
+
+                $orderItems[] = [
+                    'name' => $order['order'],
+                    'quantity' => 1,
+                    'totalAmount' => [
+                        'value' => $order['amount'],
+                        'currency' => 'PHP',
+                    ],
+                ];
+
+                $totalAmount += $order['amount'];
             }
 
             $participantLogs->create([
@@ -104,6 +117,12 @@ class RegistrationController extends Controller
                 );
             }
 
+            $checkout = $mayaService->createCheckout($transactionNumber, $orderItems, $totalAmount, $request->first_name, $request->last_name);
+
+            $newRegister->maya_checkout_url = $checkout['redirectUrl'];
+            $newRegister->maya_checkout_id = $checkout['checkoutId'];
+            $newRegister->save();
+            
             $data = [
                 'transaction_number' => $transactionNumber,
                 'first_name' => $request->first_name,
@@ -111,11 +130,12 @@ class RegistrationController extends Controller
                 'email' => $request->email,
                 'event_id' => $request->event_id,
                 'orders' => $orders,
-                'subject' => 'Registration for payment - Transaction #' . $transactionNumber
+                'subject' => 'Registration for payment - Transaction #' . $transactionNumber,
+                'maya_checkout_url' => $checkout['redirectUrl']
             ];
 
             Mail::to($request->email)
-                ->send(new RegistrationCompleteMail($data));
+                ->queue(new RegistrationCompleteMail($data));
 
             DB::commit();
 
@@ -189,8 +209,7 @@ class RegistrationController extends Controller
 
     public function dashboardSummary(Request $request, Registration $registrations, Collection $collection) {
         
-        $pending = $registrations->where('event_status', 'pending')
-                                ->where('event_id', $request->event_id)
+        $pending = $registrations->where('event_id', $request->event_id)
                                 ->count();
 
         $confirmed = $registrations->where('event_status', 'confirmed')

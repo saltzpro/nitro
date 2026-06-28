@@ -28,6 +28,9 @@
             <nuxt-link to="/report" class="menu w-100 py-2 cursor-pointer d-flex">
                 <img src="~assets/images/menu/reports.png" height="40" class="m-auto object-fit-contain" alt="">
             </nuxt-link>
+            <nuxt-link to="/event-management" class="menu w-100 py-2 cursor-pointer d-flex">
+                <nuxt-img src="/icons/event-management.svg" height="40" class="m-auto"></nuxt-img>
+            </nuxt-link>
         </div>
         
         <div class="main-container">

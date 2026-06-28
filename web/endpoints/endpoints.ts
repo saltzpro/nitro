@@ -20,3 +20,10 @@ export const EVENT_SHIRT = `api/v1/admin/event-shirt`
 export const EVENT_AGE = `api/v1/admin/event-age`
 
 export const UPLOAD_FORM = `api/v1/participants/transaction-send-proof`
+
+export const TRANSACTION_ORDERS = `api/v1/transaction/orders-summary`
+export const TRANSACTION_DETAILS = `api/v1/transaction/details`
+
+export const PAYMENT_SOURCES_LIST = `api/v1/payment/sources`
+
+export const ORGANIZER_EVENT = `api/v1/event`

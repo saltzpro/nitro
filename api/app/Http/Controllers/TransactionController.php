@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RegistrationResource;
+use App\Models\Registration;
 use App\Models\Transaction;
+use App\Services\MayaService;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -62,4 +65,93 @@ class TransactionController extends Controller
     {
         //
     }
+
+    public function transactionOrders(
+        Request $request,
+        Transaction $transaction,
+        Registration $registration
+    ) {
+        
+        try {
+            $transactionNumber = $request->transactionNumber;
+
+            if (!$transactionNumber) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No transaction number provided.'
+                ]);
+            }
+
+            $getRegistration = $registration
+                ->where('transaction_number', $transactionNumber)
+                ->first();
+
+            if (!$getRegistration) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No registration found.'
+                ]);
+            }
+
+            $transactions = $transaction
+                ->where('registration_id', $getRegistration->id)
+                ->orderBy('id')
+                ->get();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $transactions
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function transactionDetails(Request $request, Registration $registration) {
+
+    try {
+        $transactionNumber = $request->transactionNumber;
+
+        if (!$transactionNumber) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No transaction number provided.'
+            ]);
+        }
+
+        $getRegistration = $registration
+            ->where('transaction_number', $transactionNumber)
+            ->first();
+
+        if (!$getRegistration) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No registration found.'
+            ]);
+        }
+
+        return new RegistrationResource($getRegistration);
+    } catch (\Exception $e) {
+        return response()->json([
+            'data' => null,
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+        
+    }
+
+    public function createPaymentCheckout(MayaService $mayaService) {
+        $checkout = $mayaService->createCheckout(
+            transactionNumber: '12345566123123',
+            amount: 2500,
+            customerName: 'Menard'
+        );
+
+        return $checkout;
+    }   
 }

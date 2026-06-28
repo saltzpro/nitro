@@ -1,5 +1,5 @@
 
-<script lang="ts" setup>
+<script lang="ts" setup>.
 import { nextTick, onMounted, ref, triggerRef } from "vue";
 
     definePageMeta({
@@ -68,7 +68,7 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
         <h1 class="fw-bold mb-3">Dashboard</h1>
         
         <b-row class="mb-4">
-            <b-col md="3">
+            <b-col md="4">
                 <div class="dashboard-overview p-3 shadow-sm border rounded d-flex flex-column align-items-center gap-16">
                     <span class="title text-primary">TOTAL AMOUNT COLLECTED</span>
 
@@ -84,7 +84,7 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
                 </div>
             </b-col>
 
-            <b-col md="3">
+            <b-col md="4">
                 <div class="dashboard-overview p-3 shadow-sm border rounded d-flex flex-column align-items-center gap-16">
                     <span class="title text-warning">TOTAL REGISTRATIONS</span>
 
@@ -95,30 +95,14 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
                     </div>
 
                     <div class="view cursor-pointer">
-                        <span>View Registrations</span>
-                    </div>
-                </div>
-            </b-col>
-
-            <b-col md="3">
-                <div class="dashboard-overview p-3 shadow-sm border rounded d-flex flex-column align-items-center gap-16">
-                    <span class="title text-success">CONFIRMED PARTICIPANTS</span>
-
-                    <div class="">
-                        <span class="amount">
-                            {{ utils.numberFormat(es.dashboardSummary.confirmed) }}
-                        </span>
-                    </div>
-
-                    <div class="view cursor-pointer">
                         <span>View Participants</span>
                     </div>
                 </div>
             </b-col>
             
-            <b-col md="3">
+            <b-col md="4">
                 <div class="dashboard-overview p-3 shadow-sm border rounded d-flex flex-column align-items-center gap-16">
-                    <span class="title text-info">FULFILLED ORDERS</span>
+                    <span class="title text-success">FULFILLED ORDERS</span>
 
                     <div class="">
                         <span class="amount">
@@ -127,7 +111,7 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
                     </div>
 
                     <div class="view cursor-pointer">
-                        <span>View Orders</span>
+                        <span>View Participants</span>
                     </div>
                 </div>
             </b-col>
@@ -135,36 +119,15 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
         </b-row>
 
         <b-row class="mb-4">
-            <b-col>
+            <b-col lg="8">
                 <div class="p-4 shadow-sm rounded border">
-                    <h4 class="fw-bold">RECENT ACTIVITIES</h4>
-                    <div class="mt-4">
-                        <b-table-simple striped hover :isBusy="isBusyRegistration">
-                            <b-thead>
-                                <b-th class="padding-all-8">#</b-th>
-                                <b-th class="padding-all-8">Transaction number</b-th>
-                                <b-th class="padding-all-8">Logs</b-th>
-                            </b-thead>
-                            <b-tbody>
-                                <b-tr v-for="(item, i) in es.recentAcivitiesList" :key="i">
-                                    <b-td>{{ item.registration_id }}</b-td>
-                                    <b-td><span class="text-primary cursor-pointer" style="text-decoration: underline;">{{ item.transaction_number }}</span></b-td>
-                                    <b-td>{{ item.logs }}</b-td>
-                                </b-tr>
-                            </b-tbody>
-                        </b-table-simple>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="fw-bold">REGISTRATION LIST</h4>
+                        <b-button variant="success" size="sm" @click="getRegistrations('all')">View all</b-button>
                     </div>
-                </div>
-            </b-col>
-        </b-row>
-
-        <b-row class="mb-4">
-            <b-col>
-                <div class="p-4 shadow-sm rounded border">
-                    <h4 class="fw-bold">REGISTRATION LIST</h4>
 
                     <div class="mt-4">
-                        <b-table-simple striped hover :isBusy="isBusyRegistration">
+                        <b-table-simple striped hover responsive :isBusy="isBusyRegistration">
                             <b-thead>
                                 <b-th class="padding-all-8">#</b-th>
                                 <b-th class="padding-all-8">First Name</b-th>
@@ -193,7 +156,7 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
                                         <b-badge v-if="item.event_status == 'pending'" variant="danger" class="text-uppercase">{{ item.event_status }}</b-badge>
                                         <b-badge v-if="item.event_status == 'for review'" variant="warning" class="text-uppercase">{{ item.event_status }}</b-badge>
                                         <b-badge v-if="item.event_status == 'confirmed'" variant="info" class="text-uppercase">{{ item.event_status }}</b-badge>
-                                        <b-badge v-if="item.event_status == 'fulfil'" variant="success" class="text-uppercase">{{ item.event_status }}</b-badge>
+                                        <b-badge v-if="item.event_status == 'fullfil'" variant="success" class="text-uppercase">{{ item.event_status }}</b-badge>
                                     </b-td>
                                     <b-td class="text-center">
                                         <div class="d-flex gap-10 justify-content-center">
@@ -206,6 +169,33 @@ import { nextTick, onMounted, ref, triggerRef } from "vue";
                     </div>
                 </div>
                 
+            </b-col>
+
+            <b-col lg="4">
+                <div class="p-4 shadow-sm rounded border">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="fw-bold">RECENT ACTIVITIES</h4>
+                        <!-- <b-button variant="primary" size="sm" @click="recentlyActivities()">Refresh</b-button> -->
+                    </div>
+                    <div class="mt-4">
+                        <b-table-simple striped hover :isBusy="isBusyRegistration">
+                            <b-thead>
+                                <b-th class="padding-all-8">#</b-th>
+                                <b-th class="padding-all-8">Activity Logs</b-th>
+                            </b-thead>
+                            <b-tbody>
+                                <b-tr v-for="(item, i) in es.recentAcivitiesList" :key="i">
+                                    <b-td>{{ item.registration_id }}</b-td>
+                                    <b-td>
+                                        <span class="text-primary cursor-pointer" style="text-decoration: underline;">{{ item.transaction_number }}</span>
+                                        <br>
+                                        <span class="text-muted">{{ item.logs }}</span>
+                                    </b-td>
+                                </b-tr>
+                            </b-tbody>
+                        </b-table-simple>
+                    </div>
+                </div>
             </b-col>
         </b-row>
 

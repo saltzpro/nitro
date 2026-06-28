@@ -37,6 +37,7 @@ class RegistrationResource extends JsonResource
             'emergency_contact_person' => $this->emergency_contact_person,
             'emergency_relationship' => $this->emergency_relationship,
             'emergency_contact_number' => $this->emergency_contact_number,
+            'maya_checkout_url' => $this->maya_checkout_url,
             'tshirts' => ParticipantTshirtResource::collection($this->tshirts),
             'event_status' => $this->event_status,
             'participant_logs' => $this->participant_logs,

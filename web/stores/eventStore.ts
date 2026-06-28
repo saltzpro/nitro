@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { GET_EVENT, ADD_PARTICIPANTS, REGISTRATION_LIST, DASHBOARD_SUMMARY, RECENT_ACTIVITIES, STORE_COLLECTION, EVENTS_LIST,
     USER_EVENTS, ALL_EVENT_LIST, SELECTED_EVENT, USER_ADDED_EVENT, EVENT_CATEGORY, EVENT_PICKUP, EVENT_AGE,
-    EVENT_SHIRT, UPLOAD_FORM
+    EVENT_SHIRT, UPLOAD_FORM, TRANSACTION_ORDERS, PAYMENT_SOURCES_LIST, TRANSACTION_DETAILS, ORGANIZER_EVENT
  } from '@/endpoints/endpoints'
 import { useApi } from '@/composables/useApi'
 
@@ -17,7 +17,12 @@ export const useEventStore = defineStore('event', {
             userEventList: [],
             allEventsList: [],
 
-            linkedEvents: []
+            linkedEvents: [],
+            orderList: [],
+            sourceList: [],
+            transaction: null,
+
+            organizerEvent: null
         }
     },
     getters: {
@@ -63,6 +68,26 @@ export const useEventStore = defineStore('event', {
                 return state.linkedEvents.data
             }
             return []
+        },
+
+        orders(state) {
+            return state.orderList.data
+        },
+
+        totalOrderSum(state) {
+            return state.orderList.totalOrder
+        }, 
+
+        sources(state) {
+            return state.sourceList.data
+        },
+
+        getTransaction(state) {
+            return state.transaction
+        },
+
+        organizer_event(state) {
+            return state.organizerEvent
         }
     },
     actions: {
@@ -261,6 +286,54 @@ export const useEventStore = defineStore('event', {
 
             useNuxtApp().$toast(resData.message, {type: resData.status});
             return resData
+        },
+
+        async transactionOrders(payloads: any) {
+            
+            const response = await useApi().get(`${TRANSACTION_ORDERS}`, payloads)
+            const resData = response.data.value
+
+
+            const total = resData.data.map((n: any) => {
+                return n.amount
+            })
+
+            
+            resData.totalOrder = total.length ? total.reduce((sum: any, current: any) => sum + current, 0) : 0
+            
+            this.$state.orderList = resData
+            
+            return resData
+        },
+
+        async paymentSourceList(payloads: any) {
+            
+            const response = await useApi().get(`${PAYMENT_SOURCES_LIST}`, payloads)
+            const resData = response.data.value
+
+            this.$state.sourceList = resData
+
+            return resData
+        },
+
+        async transactionDetails(payloads: any) {
+            
+            const response = await useApi().get(`${TRANSACTION_DETAILS}`, payloads)
+            const resData = response.data.value
+
+            this.$state.transaction = resData.data
+
+            return resData
+        }, 
+
+        async getOrganizerEvent(payloads: any) {
+            const response = await useApi().get(`${ORGANIZER_EVENT}/${payloads.event_id}`)
+            const resData = response.data.value
+
+            this.$state.organizerEvent = resData.data
+
+            return resData
+
         }
     },
 });
